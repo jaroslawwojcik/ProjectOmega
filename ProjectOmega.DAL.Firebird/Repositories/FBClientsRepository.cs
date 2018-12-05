@@ -8,9 +8,9 @@ using ProjectOmega.DAL.Firebird.Repositories.Interfaces;
 
 namespace ProjectOmega.DAL.Firebird.Repositories
 {
-    public class ClientsRepository : BaseRepository<R3_CONTACTS>, IClientsRepository<R3_CONTACTS> 
+    public class FBClientsRepository : BaseRepository<R3_CONTACTS>, IFBClientsRepository<R3_CONTACTS> 
     {
-        public ClientsRepository(RaksConnectionString context)
+        public FBClientsRepository(RaksConnectionString context)
             : base(context)
         {
 

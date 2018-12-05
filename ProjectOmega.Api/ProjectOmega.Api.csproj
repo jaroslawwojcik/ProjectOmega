@@ -16,10 +16,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProjectOmega.DAL.Firebird\ProjectOmega.DAL.Firebird.csproj" />
     <ProjectReference Include="..\ProjectOmega.DAL.MsSql\ProjectOmega.DAL.MsSql.csproj" />
     <ProjectReference Include="..\ProjectOmega.Repositories\ProjectOmega.Repositories.csproj" />
   </ItemGroup>

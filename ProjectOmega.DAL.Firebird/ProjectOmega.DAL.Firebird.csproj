@@ -56,9 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Repositories\BaseRepository.cs" />
-    <Compile Include="Repositories\ClientsRepository.cs" />
+    <Compile Include="Repositories\FBClientsRepository.cs" />
     <Compile Include="Repositories\Interfaces\IBaseRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IClientsRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IFBClientsRepository.cs" />
     <Compile Include="GM_FS.cs">
       <DependentUpon>RaksModel.tt</DependentUpon>
     </Compile>

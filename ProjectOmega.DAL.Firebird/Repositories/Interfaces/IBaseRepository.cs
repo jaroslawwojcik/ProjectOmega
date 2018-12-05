@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectOmega.DAL.Firebird.Repositories.Interfaces
 {
-    interface IBaseRepository<T> where T : class
+    public interface IBaseRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
         T GetById(int id);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectOmega.DAL.Firebird.Repositories.Interfaces
 {
-    interface IClientsRepository<T> : IBaseRepository<T> where T : R3_CONTACTS
+    interface IFBClientsRepository<T> : IBaseRepository<T> where T : R3_CONTACTS
     {
         
     }

@@ -7,7 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProjectOmega.DAL.Firebird;
+using ProjectOmega.DAL.Firebird.Repositories;
+using ProjectOmega.DAL.Firebird.Repositories.Interfaces;
 using ProjectOmega.DAL.MsSql.Services;
+using ProjectOmega.Repositories.ClientsRepository;
 using ProjectOmega.Repositories.OrdersRepositories;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -27,7 +31,10 @@ namespace ProjectOmega.Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped<IOrdersRepository, SqlOrdersRepository>();
-            var connection = @"Data Source=(localdb)\ProjectsV13;Initial Catalog=OmegaDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;";
+            services.AddScoped<IBaseRepository<R3_CONTACTS>, BaseRepository<R3_CONTACTS>>();
+            services.AddScoped<IClientsRepository, ClientsRepository>();
+            
+            var connection = @"Data Source = LP-JAREK\SQLEXPRESS; Initial Catalog = ProjectOmega; Integrated Security = SSPI;";
             services.AddDbContext<ApplicationDbContext>
                 (options => options.UseSqlServer(connection));
 

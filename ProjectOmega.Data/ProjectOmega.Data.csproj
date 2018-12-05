@@ -13,10 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Client\" />
     <Folder Include="Models\User\" />
     <Folder Include="Models\Status\" />
     <Folder Include="Models\Role\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectOmega.DAL.Firebird\ProjectOmega.DAL.Firebird.csproj" />
   </ItemGroup>
 
 </Project>
