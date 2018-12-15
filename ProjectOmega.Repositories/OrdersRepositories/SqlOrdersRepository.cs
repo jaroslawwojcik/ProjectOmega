@@ -2,6 +2,8 @@
 using System.Linq;
 using ProjectOmega.Data.Entities;
 using ProjectOmega.Data.Models.Order;
+using ProjectOmega.Data.Models.Role;
+using ProjectOmega.Data.Models.User;
 using ProjectOmega.DAL.MsSql.Services;
 
 namespace ProjectOmega.Repositories.OrdersRepositories
@@ -16,52 +18,130 @@ namespace ProjectOmega.Repositories.OrdersRepositories
 
         public void Create(AddOrderModel order)
         {
-            new Order()
+            var user = _context.Users.Single(u => u.Id == order.UserAddedId);
+            var status = (Status)order.Status;
+
+            Order newOrder = new Order
             {
                 ClientId = order.ClientId,
-                Status = order.Status,
-                UserAdded = order.UserAdded
+                Status = status,
+                UserAdded = user
             };
+            _context.Orders.Add(newOrder);
+            _context.SaveChanges();
         }
 
-        public void Update(EditOrderModel orderToBeEdited)
+        public void Update(EditOrderModel order)
         {
-            _context.Remove(_context.Orders.FirstOrDefault(x => x.Id == orderToBeEdited.Id));
-            Order newOrder =  new Order()
-            {
-                Id = orderToBeEdited.Id,
-                ClientId = orderToBeEdited.ClientId,
-                Status = orderToBeEdited.Status,
-                UserResponsible = orderToBeEdited.UserResponsible,
-                UserInvoice = orderToBeEdited.UserInvoice,
-            };
+            var orderToBeEdited =_context.Orders.SingleOrDefault(x => x.Id == order.Id);
+
+            var userAdded = _context.Users.SingleOrDefault(u => u.Id == order.UserResponsibleId);
+            var userResponsible = _context.Users.SingleOrDefault(u => u.Id == order.UserResponsibleId);
+            var userInvoice = _context.Users.SingleOrDefault(u => u.Id == order.UserResponsibleId);
+           
+            orderToBeEdited.Id = order.Id;
+            orderToBeEdited.Status = order.Status;
+            orderToBeEdited.UserAdded = userAdded;
+            orderToBeEdited.UserInvoice = userInvoice;
+            orderToBeEdited.UserResponsible = userResponsible;
+            orderToBeEdited.ClientId = order.ClientId;
+
+            _context.SaveChanges();
         }
 
         public IEnumerable<OrderModel> GetAll()
         {
             return _context.Orders.Select(x => new OrderModel()
             {
-                Number = "MockedNumber",
+                Number = x.Number,
                 ClientId = x.ClientId,
-                UserAdded = x.UserAdded,
-                UserResponsible = x.UserResponsible,
-                UserInvoice = x.UserInvoice,
-                Status = x.Status
-            });
+                Status = x.Status,
+                UserAdded = new UserModel
+                {
+                    Id = x.UserAdded.Id,
+                    FirstName = x.UserAdded.FirstName,
+                    LastName = x.UserAdded.LastName,
+                    Role = new RoleModel()
+                    {
+                        Id = x.UserAdded.Role.Id,
+                        Name = x.UserAdded.Role.Name
+                    }
+                    
+                },
+                UserResponsible = new UserModel
+                {
+                    Id = x.UserResponsible.Id,
+                    FirstName = x.UserResponsible.FirstName,
+                    LastName = x.UserResponsible.LastName,
+                    Role = new RoleModel()
+                    {
+                        Id = x.UserResponsible.Role.Id,
+                        Name = x.UserResponsible.Role.Name
+                    }
+                },
+                UserInvoice = new UserModel
+                {
+                    Id = x.UserInvoice.Id,
+                    FirstName = x.UserInvoice.FirstName,
+                    LastName = x.UserInvoice.LastName,
+                    Role = new RoleModel()
+                    {
+                        Id = x.UserInvoice.Role.Id,
+                        Name = x.UserInvoice.Role.Name
+                    }
+                },
+            }).ToList();
         }
 
         public OrderModel GetById(long id)
         {
-           var order =  _context.Orders.SingleOrDefault(x => x.Id == id);
-            return new OrderModel()
+          return  _context.Orders.Select(x => new OrderModel()
             {
-                Number = order.Number,
-                ClientId = order.ClientId,
-                UserAdded = order.UserAdded,
-                UserResponsible = order.UserResponsible,
-                UserInvoice = order.UserInvoice,
-                Status = order.Status
-            };
+                Id = x.Id,
+                Number = x.Number,
+                ClientId = x.ClientId,
+                UserAdded = new UserModel
+                {
+                    Id = x.UserAdded.Id,
+                    FirstName = x.UserAdded.FirstName,
+                    LastName = x.UserAdded.LastName,
+                    Role = new RoleModel()
+                    {
+                        Id = x.UserAdded.Role.Id,
+                        Name = x.UserAdded.Role.Name
+                    }
+                },
+                UserResponsible = new UserModel
+                {
+                    Id = x.UserResponsible.Id,
+                    FirstName = x.UserResponsible.FirstName,
+                    LastName = x.UserResponsible.LastName,
+                    Role = new RoleModel()
+                    {
+                        Id = x.UserResponsible.Role.Id,
+                        Name = x.UserResponsible.Role.Name
+                    }
+                },
+                UserInvoice = new UserModel
+                {
+                    Id = x.UserInvoice.Id,
+                    FirstName = x.UserInvoice.FirstName,
+                    LastName = x.UserInvoice.LastName,
+                    Role = new RoleModel()
+                    {
+                    Id = x.UserInvoice.Role.Id,
+                    Name = x.UserInvoice.Role.Name
+                }
+                },
+                Status = x.Status
+            }).SingleOrDefault(o => o.Id == id);
+        }
+
+        public void Remove(long id)
+        {
+            var orderToBeRemoved = _context.Orders.SingleOrDefault(x => x.Id == id);
+            _context.Orders.Remove(orderToBeRemoved);
+            _context.SaveChanges();
         }
     }
 }
